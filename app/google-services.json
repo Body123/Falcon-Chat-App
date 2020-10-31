@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "23384109174",
+    "firebase_url": "https://falcon-a9620.firebaseio.com",
+    "project_id": "falcon-a9620",
+    "storage_bucket": "falcon-a9620.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23384109174:android:c11755f3fc6f55facc6f57",
+        "android_client_info": {
+          "package_name": "com.example.falcon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23384109174-vqe5gqlb4r1stf170kltvnset89cdgfn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.falcon",
+            "certificate_hash": "3cf4b2018cf94edc2a705acff1f38502bfaad4d8"
+          }
+        },
+        {
+          "client_id": "23384109174-og64oedr8uqfmamucr1h08fosg7impfq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyvojHFZUFrFSpPHfA_B9D0JUNwy5LrvY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "23384109174-og64oedr8uqfmamucr1h08fosg7impfq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
