@@ -92,6 +92,12 @@ public class MainActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             //send to start activity after logout
             sendToStartActivity();
+        }else if(item.getItemId()==R.id.mainSettingBtn){
+            Intent settingsIntent=new Intent(MainActivity.this,SettingsActivity.class);
+            startActivity(settingsIntent);
+        }else if(item.getItemId()==R.id.mainAllUsersBtn){
+            Intent usersIntent=new Intent(MainActivity.this,UsersActivity.class);
+            startActivity(usersIntent);
         }
 
         return true;

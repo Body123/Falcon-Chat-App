@@ -19,12 +19,16 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 
 public class RegisterActivity extends AppCompatActivity {
     //firebase auth
     private FirebaseAuth mAuth;
-
+    private DatabaseReference mDatabase;
     private TextInputLayout reqNametx,reqPasswordtx,reqEmailtx;
     private Button createNewAccountbtn;
     private ProgressBar progressBar;
@@ -72,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
     }
 
-    private void register_user(String name, final String email, final String password) {
+    private void register_user(final String name, final String email, final String password) {
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(getApplicationContext(), "Please enter name...", Toast.LENGTH_LONG).show();
             return;
@@ -91,15 +95,34 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_LONG).show();
-                            progressBar.setVisibility(View.GONE);
-                            Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(mainIntent);
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseUser current_user=FirebaseAuth.getInstance().getCurrentUser();
+                            if(current_user!=null) {
+                                String uid = current_user.getUid();
+                                mDatabase=FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+                                HashMap<String,String> userMap=new HashMap<>();
+                                userMap.put("name",name);
+                                userMap.put("status","Hi there, I'am using Falcon Chat App");
+                                userMap.put("image","default");
+                                userMap.put("thumb_image","default");
+
+                                mDatabase.setValue(userMap).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_LONG).show();
+
+                                        Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                                        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(mainIntent);
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d(TAG, "createUserWithEmail:success");
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                    }
+                                });
+                            }
+
+
+
 
                         } else {
                             progressBar.setVisibility(View.GONE);

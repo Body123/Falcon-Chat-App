@@ -4,26 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:background="@color/colorPrimaryDark"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".StartActivity">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageStart"
+        android:layout_width="133dp"
+        android:layout_height="153dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/colorPrimaryDark"
+        android:src="@drawable/icon2" />
+
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="70dp"
+        android:gravity="center"
         android:padding="13dp"
-        android:text="Welcom To Falcon Chat App"
-        android:textColor="#000"
-        android:textSize="30sp" />
+        android:text="@string/welcom_to_falcon_chat_app"
+        android:textColor="@color/colorPrimaryVersion2"
+        android:textSize="40sp" />
 
     <Button
         android:id="@+id/logbtn"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:background="@color/colorAccent"
         android:padding="7dp"
         android:text="@string/already_have_account"
@@ -35,7 +45,7 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:background="#fff"
-        android:padding="7dp"
+        android:padding="5dp"
         android:text="@string/need_new_account"
         android:textColor="@color/colorPrimary"
         android:textSize="30sp" />
