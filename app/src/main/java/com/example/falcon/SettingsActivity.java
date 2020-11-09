@@ -34,6 +34,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.security.PrivateKey;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -159,7 +161,7 @@ public class SettingsActivity extends AppCompatActivity {
                 }
 
                 final StorageReference filePath=imageStorage.child("profile_image").child(currentUserId+".jpg");
-                StorageReference thumb_filebath=imageStorage.child("profile_image").child("thumbs").child(currentUserId+".jpg");
+                final StorageReference thumb_filebath=imageStorage.child("profile_image").child("thumbs").child(currentUserId+".jpg");
                 filePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -168,16 +170,34 @@ public class SettingsActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri uri) {
                                 final String downloadUrl = uri.toString();
-                                mUserDatabase.child("image").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                UploadTask uploadTask = thumb_filebath.putBytes(thumb_byte); //////////
+                                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
-                                            settingsProgressDialog.dismiss();
-                                        }else{
-                                            settingsProgressDialog.dismiss();
-                                        }
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot_thumb) {
+                                        final Task<Uri> thumb_image_Uri = taskSnapshot_thumb.getStorage().getDownloadUrl();
+                                        thumb_image_Uri.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri thumb_uri) {
+                                                final String download_thumb_Url = thumb_uri.toString();
+                                                Map<String,Object>update_map=new HashMap<>();
+                                                update_map.put("image",downloadUrl);
+                                                update_map.put("thumb_image",download_thumb_Url);
+
+                                                mUserDatabase.updateChildren(update_map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if(task.isSuccessful()){
+                                                            settingsProgressDialog.dismiss();
+                                                        }else{
+                                                            settingsProgressDialog.dismiss();
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
                                     }
                                 });
+
                             }
                         });
                     }
